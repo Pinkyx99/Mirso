@@ -1,0 +1,162 @@
+/* CardNav.css */
+.card-nav-container {
+  position: relative;
+  z-index: 50;
+  height: 60px;
+}
+
+.card-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-nav-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  height: 60px;
+  position: relative;
+  z-index: 2;
+  background-color: inherit;
+}
+
+.hamburger-menu {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  z-index: 10;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.hamburger-line:first-child {
+  margin-bottom: 5px;
+}
+
+.hamburger-menu.open .hamburger-line:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.hamburger-menu.open .hamburger-line:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.logo-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 0;
+  border: none;
+}
+
+.card-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-nav-cta-button {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+.card-nav-cta-button:hover {
+  opacity: 0.85;
+}
+
+.card-nav-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+}
+
+.card-nav.open .card-nav-content {
+  visibility: visible;
+  pointer-events: auto;
+  position: static;
+}
+
+.nav-card {
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.nav-card-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.nav-card-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.nav-card-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.nav-card-link:hover {
+  opacity: 0.7;
+}
+
+.nav-card-link-icon {
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .card-nav-content {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+  .card-nav-cta-button {
+    display: none;
+  }
+  .card-nav-actions {
+    gap: 0;
+  }
+}
