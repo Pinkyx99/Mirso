@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import * as React from 'react';
+import { useRef, useEffect } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
 import './LiquidChrome.css';
@@ -22,15 +23,15 @@ export const LiquidChrome: React.FC<LiquidChromeProps> = ({
   ...props
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const animationId = useRef<number>();
 
   useEffect(() => {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
-    const renderer = new Renderer({ antialias: true });
+    const renderer = new Renderer({ antialias: true, dpr: 1 }); // Reduced dpr for performance
     const gl = renderer.gl;
-    gl.clearColor(1, 1, 1, 1);
-
+    
     const vertexShader = `
       attribute vec2 position;
       attribute vec2 uv;
@@ -56,32 +57,24 @@ export const LiquidChrome: React.FC<LiquidChromeProps> = ({
           vec2 fragCoord = uvCoord * uResolution.xy;
           vec2 uv = (2.0 * fragCoord - uResolution.xy) / min(uResolution.x, uResolution.y);
 
-          for (float i = 1.0; i < 10.0; i++){
+          // Reduced loop for performance
+          for (float i = 1.0; i < 6.0; i++){
               uv.x += uAmplitude / i * cos(i * uFrequencyX * uv.y + uTime + uMouse.x * 3.14159);
               uv.y += uAmplitude / i * cos(i * uFrequencyY * uv.x + uTime + uMouse.y * 3.14159);
           }
 
           vec2 diff = (uvCoord - uMouse);
           float dist = length(diff);
-          float falloff = exp(-dist * 20.0);
+          float falloff = exp(-dist * 10.0);
           float ripple = sin(10.0 * dist - uTime * 2.0) * 0.03;
           uv += (diff / (dist + 0.0001)) * ripple * falloff;
 
-          vec3 color = uBaseColor / abs(sin(uTime - uv.y - uv.x));
+          vec3 color = uBaseColor / abs(sin(uTime * 0.1 - uv.y - uv.x));
           return vec4(color, 1.0);
       }
 
       void main() {
-          vec4 col = vec4(0.0);
-          int samples = 0;
-          for (int i = -1; i <= 1; i++){
-              for (int j = -1; j <= 1; j++){
-                  vec2 offset = vec2(float(i), float(j)) * (1.0 / min(uResolution.x, uResolution.y));
-                  col += renderImage(vUv + offset);
-                  samples++;
-              }
-          }
-          gl_FragColor = col / float(samples);
+          gl_FragColor = renderImage(vUv);
       }
     `;
 
@@ -98,14 +91,13 @@ export const LiquidChrome: React.FC<LiquidChromeProps> = ({
         uAmplitude: { value: amplitude },
         uFrequencyX: { value: frequencyX },
         uFrequencyY: { value: frequencyY },
-        uMouse: { value: new Float32Array([0, 0]) }
+        uMouse: { value: new Float32Array([0.5, 0.5]) }
       }
     });
     const mesh = new Mesh(gl, { geometry, program });
 
     function resize() {
-      const scale = 1;
-      renderer.setSize(container.offsetWidth * scale, container.offsetHeight * scale);
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
       const resUniform = program.uniforms.uResolution.value as Float32Array;
       resUniform[0] = gl.canvas.width;
       resUniform[1] = gl.canvas.height;
@@ -139,28 +131,55 @@ export const LiquidChrome: React.FC<LiquidChromeProps> = ({
       container.addEventListener('mousemove', handleMouseMove);
       container.addEventListener('touchmove', handleTouchMove);
     }
+    
+    const stopAnimation = () => {
+        if (animationId.current) {
+            cancelAnimationFrame(animationId.current);
+            animationId.current = undefined;
+        }
+    };
 
-    let animationId: number;
-    function update(t: number) {
-      animationId = requestAnimationFrame(update);
-      program.uniforms.uTime.value = t * 0.001 * speed;
-      renderer.render({ scene: mesh });
-    }
-    animationId = requestAnimationFrame(update);
+    const startAnimation = () => {
+        if (!animationId.current) {
+            const update = (t: number) => {
+                program.uniforms.uTime.value = t * 0.001 * speed;
+                renderer.render({ scene: mesh });
+                animationId.current = requestAnimationFrame(update);
+            };
+            animationId.current = requestAnimationFrame(update);
+        }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      },
+      { threshold: 0.01 }
+    );
+    observer.observe(container);
 
     container.appendChild(gl.canvas);
 
     return () => {
-      cancelAnimationFrame(animationId);
+      stopAnimation();
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       if (interactive) {
         container.removeEventListener('mousemove', handleMouseMove);
         container.removeEventListener('touchmove', handleTouchMove);
       }
-      if (gl.canvas.parentElement) {
+      if (gl.canvas && gl.canvas.parentElement) {
         gl.canvas.parentElement.removeChild(gl.canvas);
       }
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+       try {
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+      } catch (e) {
+        console.error("Could not lose WebGL context.", e);
+      }
     };
   }, [baseColor, speed, amplitude, frequencyX, frequencyY, interactive]);
 

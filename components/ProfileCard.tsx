@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import * as React from 'react';
+import { useEffect, useRef, useCallback, useMemo } from 'react';
 import './ProfileCard.css';
 
 interface ProfileCardProps {

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 'use client';
-import React from 'react';
+import * as React from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import {
@@ -14,17 +14,7 @@ import {
 import { MeshLine as MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
-// FIX: Augment the `@react-three/fiber` module to include custom `meshline` elements.
-// This correctly extends the JSX namespace for react-three-fiber, making both built-in
-// and custom elements available in JSX.
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      meshLineGeometry: any;
-      meshLineMaterial: any;
-    }
-  }
-}
+// Fix: Moved global JSX augmentation to types.ts to resolve conflicts.
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 

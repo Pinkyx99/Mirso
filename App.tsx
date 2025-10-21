@@ -1,59 +1,50 @@
-import React from 'react';
+import * as React from 'react';
+import { useTheme } from './contexts/ThemeContext';
 import Hero from './components/Hero';
 import Projects from './components/Projects';
 import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import CardNav from './components/CardNav';
-import type { CardNavItem } from './components/CardNav';
+import StaggeredMenu from './components/StaggeredMenu';
+import type { StaggeredMenuItem, StaggeredMenuSocialItem } from './components/StaggeredMenu';
 
-const navItems: CardNavItem[] = [
-  {
-    label: 'Projekte',
-    bgColor: '#171321',
-    textColor: '#f0f0f0',
-    links: [
-      { label: 'Das Glashaus', href: '#projects', ariaLabel: 'Zum Projekt Das Glashaus' },
-      { label: 'Betontraum', href: '#projects', ariaLabel: 'Zum Projekt Betontraum' },
-      { label: 'Skyline Turm', href: '#projects', ariaLabel: 'Zum Projekt Skyline Turm' },
-    ],
-  },
-  {
-    label: 'Über Mich',
-    bgColor: '#1C1829',
-    textColor: '#f0f0f0',
-    links: [
-      { label: 'Biografie', href: '#about', ariaLabel: 'Zur Biografie' },
-      { label: 'Philosophie', href: '#about', ariaLabel: 'Zur Philosophie' },
-    ],
-  },
-  {
-    label: 'Kontakt',
-    bgColor: '#262135',
-    textColor: '#f0f0f0',
-    links: [
-      { label: 'E-Mail', href: 'mailto:contact@mirsoxhaferi.com', ariaLabel: 'E-Mail senden' },
-      { label: 'LinkedIn', href: '#', ariaLabel: 'Zum LinkedIn Profil' },
-      { label: 'Instagram', href: '#', ariaLabel: 'Zum Instagram Profil' },
-    ],
-  },
+
+const menuItems: StaggeredMenuItem[] = [
+  { label: 'Start', ariaLabel: 'Gehe zum Start', link: '#home' },
+  { label: 'Projekte', ariaLabel: 'Gehe zu den Projekten', link: '#projects' },
+  { label: 'Über Mich', ariaLabel: 'Gehe zum Über-Mich-Abschnitt', link: '#about' },
+  { label: 'Kontakt', ariaLabel: 'Gehe zum Kontaktformular', link: '#contact' }
 ];
 
+const socialItems: StaggeredMenuSocialItem[] = [
+  { label: 'LinkedIn', link: 'https://www.linkedin.com/in/mirso-xhaferi-3aa769246/' },
+  { label: 'Instagram', link: 'https://www.instagram.com/mirso.xhaferi/' },
+  { label: 'X', link: '#' }
+];
 
 function App() {
-   const cardNavProps = {
-    logo: "https://i.imgur.com/CrlYhiH.png",
-    logoAlt: "Mirso Xhaferi Logo",
-    items: navItems,
-    baseColor: '#111827',
-    menuColor: '#f0f0f0',
-    buttonBgColor: '#ffffff',
-    buttonTextColor: '#111827'
-  };
+  const { theme } = useTheme();
+
+  const menuColors = theme === 'dark' ? ['#374151', '#111827'] : ['#e2e8f0', '#ffffff'];
+  const menuButtonColor = theme === 'dark' ? '#f9fafb' : '#0f172a';
+  const openMenuButtonColor = theme === 'dark' ? '#0f172a' : '#f9fafb';
 
   return (
-    <div className="bg-gray-950 text-gray-200 antialiased">
-      <CardNav {...cardNavProps} />
+    <div className="bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased">
+       <StaggeredMenu
+        position="left"
+        items={menuItems}
+        socialItems={socialItems}
+        displaySocials={true}
+        displayItemNumbering={true}
+        colors={menuColors}
+        logoUrl="/logo.svg"
+        menuButtonColor={menuButtonColor}
+        openMenuButtonColor={openMenuButtonColor}
+        changeMenuColorOnOpen={true}
+        accentColor="#4f46e5" /* Indigo 600 */
+        isFixed={true}
+      />
       <main>
         <Hero />
         <Projects />

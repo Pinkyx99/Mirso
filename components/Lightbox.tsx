@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 interface LightboxProps {
   imageUrl: string;
@@ -50,15 +51,15 @@ const Lightbox: React.FC<LightboxProps> = ({ imageUrl, onClose }) => {
 
       {/* Content */}
       <div
-        className={`relative max-w-4xl max-h-full transform transition-all duration-300 ease-out ${
+        className={`relative max-w-5xl max-h-full transform transition-all duration-300 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <img src={imageUrl} alt="Vergrößerte Projektansicht" className="max-w-full max-h-[90vh] object-contain rounded-sm" />
+        <img src={imageUrl} alt="Vergrößerte Projektansicht" className="max-w-full max-h-[90vh] object-contain rounded-md" />
         <button
           onClick={handleClose}
-          className="absolute -top-3 -right-3 h-9 w-9 bg-gray-700 text-white rounded-full flex items-center justify-center text-2xl font-bold hover:bg-gray-600 transition-colors"
+          className="absolute -top-4 -right-4 h-10 w-10 bg-[var(--bg-secondary)] text-[var(--text-primary)] rounded-full flex items-center justify-center text-2xl font-bold hover:opacity-80 transition-opacity"
           aria-label="Lightbox schließen"
         >
           &times;
@@ -68,4 +69,4 @@ const Lightbox: React.FC<LightboxProps> = ({ imageUrl, onClose }) => {
   );
 };
 
-export default Lightbox;
+export default React.memo(Lightbox);

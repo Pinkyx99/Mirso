@@ -1,40 +1,36 @@
-import React from 'react';
+import * as React from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
-import ProfileCard from './ProfileCard';
-import './ProfileCard.css';
 
 const About: React.FC = () => {
-  const [ref, isVisible] = useIntersectionObserver<HTMLDivElement>();
-
-  const handleContactClick = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [ref, isVisible] = useIntersectionObserver<HTMLDivElement>({ threshold: 0.3 });
 
   return (
-    <section id="about" className="py-20 bg-gray-950">
+    <section id="about" className="py-20 lg:py-32 bg-[var(--bg-secondary)]">
       <div ref={ref} className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-16">
-          <div className={`w-full md:w-2/5 flex justify-center transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <ProfileCard
-              name="Mirso Xhaferi"
-              title="Architekt"
-              handle="mirso.arch"
-              status="Verfügbar für Projekte"
-              contactText="Kontakt"
-              avatarUrl="https://i.imgur.com/Wls8gtb.png"
-              enableTilt={true}
-              showUserInfo={true}
-              onContactClick={handleContactClick}
-            />
+        <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
+          <div className={`w-full md:w-2/5 flex justify-center transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+             <img 
+                src="https://i.imgur.com/Wls8gtb.png" 
+                alt="Portrait von Mirso Xhaferi" 
+                className="rounded-lg shadow-2xl w-full max-w-sm object-cover aspect-[4/5]"
+             />
           </div>
-          <div className={`w-full md:w-3/5 transition-all duration-1000 ease-out delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <h2 className="text-3xl font-bold mb-4 text-gray-50">Über Mirso Xhaferi</h2>
-            <p className="text-gray-400 leading-relaxed mb-4">
-              Mirso Xhaferi ist ein Architekt, der sich auf moderne und nachhaltige Designs spezialisiert hat. Seine Arbeit verbindet Ästhetik und Funktionalität, um inspirierende Räume zu schaffen.
-            </p>
-             <p className="text-gray-400 leading-relaxed">
-              Mit einem scharfen Auge für Details und einer Leidenschaft für minimalistische Eleganz strebt er danach, Umgebungen zu schaffen, die nicht nur visuell beeindruckend, sondern auch zutiefst menschlich sind. Jedes Projekt ist ein Dialog zwischen Form, Material und Licht, der darauf abzielt, das Leben derer zu bereichern, die den Raum bewohnen.
-            </p>
+          <div className={`w-full md:w-3/5 transition-all duration-1000 ease-out delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-[var(--text-primary)]">Über Mirso Xhaferi</h2>
+            <div className="space-y-4 text-[var(--text-secondary)] leading-relaxed">
+                <p>
+                Mirso Xhaferi ist ein Architekt, der sich auf moderne und nachhaltige Designs spezialisiert hat. Seine Arbeit verbindet Ästhetik und Funktionalität, um inspirierende Räume zu schaffen, die das menschliche Erleben in den Mittelpunkt stellen.
+                </p>
+                <p>
+                Mit einem scharfen Auge für Details und einer Leidenschaft für minimalistische Eleganz strebt er danach, Umgebungen zu schaffen, die nicht nur visuell beeindruckend, sondern auch zutiefst menschlich sind. Jedes Projekt ist ein Dialog zwischen Form, Material und Licht, der darauf abzielt, das Leben derer zu bereichern, die den Raum bewohnen.
+                </p>
+            </div>
+             <a
+                href="#contact"
+                className="mt-8 inline-block bg-[var(--accent-color)] text-[var(--accent-text-color)] font-semibold py-3 px-8 rounded-full hover:opacity-80 transition-opacity duration-300"
+            >
+                Kontakt aufnehmen
+            </a>
           </div>
         </div>
       </div>

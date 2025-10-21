@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
+import * as React from 'react';
+import { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -10,18 +11,22 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
+  const [theme, setTheme] = useState<Theme>('dark');
+
+  useEffect(() => {
+    const isBrowser = typeof window !== 'undefined';
+    if(isBrowser) {
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light' || savedTheme === 'dark') {
-            return savedTheme;
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+            setTheme(savedTheme as Theme);
+        } else if (prefersDark) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
         }
     }
-    return 'light';
-  });
+  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;
