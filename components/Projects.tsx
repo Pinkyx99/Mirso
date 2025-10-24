@@ -1,3 +1,6 @@
+// Fix: Import 'types.ts' for its side-effect of augmenting the global JSX namespace.
+// This resolves "Property '...' does not exist on type 'JSX.IntrinsicElements'" errors across the app.
+import '../types';
 import * as React from 'react';
 import { useState, useCallback } from 'react';
 import type { Project } from '../types';
@@ -17,13 +20,13 @@ const ProjectItem: React.FC<{ project: Project; index: number; onSelect: (imageU
 
     const handleClick = () => onSelect(project.imageUrl);
 
-    const imageClasses = `transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-x-0' : `opacity-0 ${isEven ? '-translate-x-8' : 'translate-x-8'}`}`;
-    const textClasses = `transition-all duration-1000 ease-out delay-200 ${isVisible ? 'opacity-100 translate-x-0' : `opacity-0 ${isEven ? 'translate-x-8' : '-translate-x-8'}`}`;
+    const imageClasses = `transition-all duration-700 ease-in-out ${isVisible ? 'opacity-100 translate-x-0 scale-100' : `opacity-0 ${isEven ? '-translate-x-8' : 'translate-x-8'} scale-95`}`;
+    const textClasses = `transition-all duration-700 ease-in-out delay-200 ${isVisible ? 'opacity-100 translate-x-0' : `opacity-0 ${isEven ? 'translate-x-8' : '-translate-x-8'}`}`;
 
     return (
         <div ref={ref} className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
             <div className={`w-full md:w-1/2 cursor-pointer group overflow-hidden rounded-lg ${imageClasses}`} onClick={handleClick}>
-                 <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy" decoding="async" />
+                 <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" loading="lazy" decoding="async" />
             </div>
             <div className={`w-full md:w-1/2 ${textClasses}`}>
                 <p className="text-sm font-semibold text-[var(--text-secondary)] tracking-widest uppercase">{project.location}</p>
@@ -53,7 +56,7 @@ const Projects: React.FC = () => {
   return (
     <section id="projects" className="py-20 lg:py-32 bg-[var(--bg-primary)]">
       <div className="container mx-auto px-6">
-        <div ref={ref} className={`text-center mb-16 transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div ref={ref} className={`text-center mb-16 transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           <h2 className="text-3xl lg:text-4xl font-bold text-[var(--text-primary)]">Ausgewählte Projekte</h2>
           <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto">Eine kuratierte Auswahl unserer Arbeiten, die unser Engagement für Design, Innovation und Nachhaltigkeit zeigt.</p>
         </div>

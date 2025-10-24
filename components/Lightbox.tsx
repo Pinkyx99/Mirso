@@ -1,4 +1,7 @@
 import * as React from 'react';
+// Fix: Import 'types.ts' for its side-effect of augmenting the global JSX namespace.
+// This resolves "Property '...' does not exist on type 'JSX.IntrinsicElements'" errors across the app.
+import '../types';
 import { useEffect, useState } from 'react';
 
 interface LightboxProps {
