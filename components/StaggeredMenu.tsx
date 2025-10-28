@@ -196,7 +196,8 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     <a href={item.link} className="sm-socials-link" target="_blank" rel="noopener noreferrer">
                       {item.label}
                     </a>
-                  ))}
+                  </li>
+                ))}
               </ul>
             </div>
           )}

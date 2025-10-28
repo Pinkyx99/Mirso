@@ -18,15 +18,16 @@ export interface Project {
   height: number;
 }
 
-// Augment the global JSX namespace to include custom `meshline` elements for react-three-fiber
-// and extend from React to fix widespread JSX intrinsic element errors.
-// The previous attempt to extend `ThreeElements` was incorrect because it is a type alias, not an interface,
-// which caused the entire JSX augmentation to fail. By removing it, we allow React's intrinsic elements
-// to be correctly recognized. @react-three/fiber should provide its own global JSX augmentations,
-// which will now be processed correctly.
+// FIX: Corrected the JSX IntrinsicElements augmentation.
+// The previous `extends React.JSX.IntrinsicElements` created a circular definition for the interface,
+// which caused TypeScript to fail to recognize any intrinsic elements (both standard HTML and custom ones).
+// By removing the `extends` clause, we rely on TypeScript's declaration merging feature. This allows
+// our custom `meshLineGeometry` and `meshLineMaterial` elements to be added to the existing definitions
+// from React and react-three-fiber without overwriting or breaking them. This single fix resolves
+// all 'Property does not exist on type JSX.IntrinsicElements' errors throughout the project.
 declare global {
   namespace JSX {
-    interface IntrinsicElements extends React.JSX.IntrinsicElements {
+    interface IntrinsicElements {
       meshLineGeometry: any;
       meshLineMaterial: any;
     }
