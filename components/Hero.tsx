@@ -15,10 +15,14 @@ const Hero: React.FC = () => {
   return (
     <section id="home" className="relative h-screen flex items-center justify-center text-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-          <div 
-            className="absolute inset-0 bg-cover bg-center animate-kenburns"
-            style={{ backgroundImage: "url('https://i.imgur.com/qLid3gj.jpg')" }}
-          ></div>
+          <iframe 
+            src='https://my.spline.design/architecturalstudiowebdesignherosection-Sc82YTcU9VxEwVcTkBHaj7q3/' 
+            frameBorder='0' 
+            width='100%' 
+            height='100%'
+            className="absolute inset-0 w-full h-full"
+            title="Interactive 3D architectural model background"
+          ></iframe>
       </div>
        <div className="absolute top-0 left-0 w-full h-full bg-black/30 dark:bg-black/60"></div>
       <div className="relative z-10 px-4 text-[var(--text-primary-on-dark)]">
