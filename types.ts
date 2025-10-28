@@ -5,11 +5,8 @@
 // The imports below ensure proper JSX namespace augmentation.
 // The React import brings the 'React' namespace into scope, which is required for augmenting JSX.IntrinsicElements.
 import * as React from 'react';
-import { ThreeElements } from '@react-three/fiber';
-
-// FIX: Create a type alias for React's intrinsic elements to aid TypeScript's resolver.
-// This helps prevent issues where the base JSX types are not found during global augmentation.
-type ReactIntrinsicElements = React.JSX.IntrinsicElements;
+// FIX: Removed unused import. ThreeElements is a type alias and cannot be used in an `extends` clause for an interface.
+// import { ThreeElements } from '@react-three/fiber';
 
 export interface Project {
   id: number;
@@ -22,13 +19,14 @@ export interface Project {
 }
 
 // Augment the global JSX namespace to include custom `meshline` elements for react-three-fiber
-// and extend from React and R3F to fix widespread JSX intrinsic element errors.
+// and extend from React to fix widespread JSX intrinsic element errors.
+// The previous attempt to extend `ThreeElements` was incorrect because it is a type alias, not an interface,
+// which caused the entire JSX augmentation to fail. By removing it, we allow React's intrinsic elements
+// to be correctly recognized. @react-three/fiber should provide its own global JSX augmentations,
+// which will now be processed correctly.
 declare global {
   namespace JSX {
-    // By extending the aliased React.JSX.IntrinsicElements and ThreeElements, we ensure that
-    // both standard HTML elements and react-three-fiber elements are available,
-    // solving the widespread "Property does not exist on type 'JSX.IntrinsicElements'" errors.
-    interface IntrinsicElements extends ReactIntrinsicElements, ThreeElements {
+    interface IntrinsicElements extends React.JSX.IntrinsicElements {
       meshLineGeometry: any;
       meshLineMaterial: any;
     }

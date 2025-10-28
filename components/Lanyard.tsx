@@ -2,9 +2,6 @@
 'use client';
 import * as React from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
-// Fix: Import 'types.ts' for its side-effect of augmenting the global JSX namespace.
-// This resolves "Property '...' does not exist on type 'JSX.IntrinsicElements'" errors across the app.
-import '../types';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import {
   BallCollider,

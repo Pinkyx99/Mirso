@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { Suspense, useRef, useLayoutEffect, useEffect, useMemo } from 'react';
-// Fix: Import 'types.ts' for its side-effect of augmenting the global JSX namespace.
-// This resolves "Property '...' does not exist on type 'JSX.IntrinsicElements'" errors across the app.
-import '../types';
 import { Canvas, useFrame, useLoader, useThree, invalidate } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useFBX, useProgress, Html, Environment, ContactShadows } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';

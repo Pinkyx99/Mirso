@@ -1,7 +1,4 @@
 import * as React from 'react';
-// Fix: Import 'types.ts' for its side-effect of augmenting the global JSX namespace.
-// This resolves "Property '...' does not exist on type 'JSX.IntrinsicElements'" errors across the app.
-import '../types';
 import { useState, useEffect } from 'react';
 
 const Hero: React.FC = () => {
@@ -13,10 +10,10 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+    <section id="home" className="relative h-screen overflow-hidden">
       <div className="absolute inset-0 z-0">
           <iframe 
-            src='https://my.spline.design/architecturalstudiowebdesignherosection-Sc82YTcU9VxEwVcTkBHaj7q3/' 
+            src='https://my.spline.design/architecturalstudiowebdesignherosection-Sc82YTcU9VxEwVcTkBHaj7q3/?logo=false' 
             frameBorder='0' 
             width='100%' 
             height='100%'
@@ -25,35 +22,23 @@ const Hero: React.FC = () => {
           ></iframe>
       </div>
        <div className="absolute top-0 left-0 w-full h-full bg-black/30 dark:bg-black/60"></div>
-      <div className="relative z-10 px-4 text-[var(--text-primary-on-dark)]">
-        <h1
-          className={`text-4xl md:text-6xl font-bold tracking-tight transition-all duration-1000 ease-in-out ${
-            isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-          }`}
-          style={{ textShadow: '0px 2px 10px rgba(0,0,0,0.5)' }}
+      
+       <div
+        className={`absolute bottom-10 left-1/2 -translate-x-1/2 z-10 transition-opacity duration-1000 delay-500 ${
+          isMounted ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <a
+          href="#projects"
+          className="text-[var(--text-primary-on-dark)] hover:opacity-75 transition-opacity"
+          aria-label="Scroll to projects section"
         >
-          Mirso Xhaferi — Architekt
-        </h1>
-        <p
-          className={`mt-4 text-lg md:text-xl max-w-2xl mx-auto transition-all duration-1000 ease-in-out delay-200 ${
-            isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-          }`}
-           style={{ textShadow: '0px 2px 8px rgba(0,0,0,0.5)' }}
-        >
-          Zeitlose Räume gestalten, die inspirieren und Bestand haben.
-        </p>
-        <div
-          className={`transition-all duration-1000 ease-in-out delay-400 ${
-            isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-          }`}
-        >
-          <a
-            href="#projects"
-            className="mt-8 inline-block bg-[var(--accent-color)] text-[var(--accent-text-color)] font-semibold py-3 px-8 rounded-full hover:opacity-80 transition-opacity duration-300"
-          >
-            Projekte ansehen
-          </a>
-        </div>
+          <div className="animate-bounce w-10 h-10 flex items-center justify-center">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+        </a>
       </div>
     </section>
   );
